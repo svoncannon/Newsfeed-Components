@@ -5,6 +5,9 @@
 }
 
 .menu {
+  animation-duration: 3s;
+  animation-name: slideout;
+
   display: none;
   position: fixed;
   top: 75px;
@@ -28,3 +31,23 @@
 .menu--open {
   display: block;
 }
+
+@keyframes slideout {
+  from {
+    margin-left: -350px;
+  }
+
+  to {
+    margin-left: 0;
+  }
+}
+
+// @keyframes slidein {
+//   from {
+//     margin-left: 0;
+//   }
+
+//   to {
+//     margin-left:-350px;
+//   }
+// }

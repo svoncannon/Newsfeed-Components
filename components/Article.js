@@ -1,5 +1,9 @@
 /* This is the data we will be using to create our articles */
 /* Look over this data, then proceed to line 91*/
+
+// adding import tag for GSAP (Stretch assignment)
+import {gsap} from 'gsap'
+
 const data = [
   {
     title: 'Lambda School Students: "We\'re the best!"',
@@ -121,48 +125,70 @@ const data = [
   Step 5: Add a new article to the array. Make sure it is in the same format as the others. Refresh the page to see the new article.
 */
 
-const articleContainer = document.querySelector('.articles');
-
-data.map(info => {
-  articleContainer.appendChild(articleMaker(info.title, info.date, info.firstParagraph, info.secondParagraph, info.thirdParagraph))
-});
-
-function articleMaker(title, date, firstParagraph, secondParagraph, thirdParagraph) {
-
-// define new elements
-  const article = document.createElement('div');
-  const articleTitle = document.createElement('h2');
-  const articleDate = document.createElement('p');
-  const para1 = document.createElement('p');
-  const para2 = document.createElement('p');
-  const para3 = document.createElement('p');
-  const expand = document.createElement('span');
-
-// Setup structure of elements 
-  article.appendChild(articleTitle);
-  article.appendChild(articleDate);
-  article.appendChild(para1);
-  article.appendChild(para2);
-  article.appendChild(para3);
-  article.appendChild(expand);
-
+const mainContainer = document.querySelector('.articles')
+// Step 1 (Part 1) - created a component function called 'articleMaker' that takes in an object
+function articleMaker(articleObj){
   
- // set class names
-  article.classList.add('article');
-  articleDate.classList.add('date');
-  expand.classList.add('expandButton');
-  
- // set text content 
-  articleTitle.textContent = title;
-  articleDate.textContent = date;
-  para1.textContent = firstParagraph;
-  para2.textContent = secondParagraph;
-  para3.textContent = thirdParagraph;
-  expand.textContent = "Open for more"
-  
-  expand.addEventListener('click', () => {
-    article.classList.toggle('article-open');
-  });
+  // Step 1 (Part 2) - Creating the article object 
+  // these are just creating the outline of the object and saving them into variables to use later on  
+  const article = document.createElement('div')
+  const articleTitle = document.createElement('h2')
+  const articleDate = document.createElement('p')
+  const articleParagraph1 = document.createElement('p')
+  const articleParagraph2 = document.createElement('p')
+  const articleParagraph3 = document.createElement('p')
+  const articleExpandButton = document.createElement('span')
 
-  return article;
+  // this step is just appending all the data into one object called 'article' 
+  mainContainer.appendChild(article)
+  article.appendChild(articleTitle)
+  article.appendChild(articleDate)
+  article.appendChild(articleParagraph1)
+  article.appendChild(articleParagraph2)
+  article.appendChild(articleParagraph3)
+  article.appendChild(articleExpandButton)
+
+  // this step is adding class names to each of these objects 
+  article.classList.add('article')
+  articleDate.classList.add('date')
+  articleExpandButton.classList.add('expandButton')
+
+  // this step is going through and adding text content to show up on the page
+  articleTitle.textContent = articleObj.title;
+  articleDate.textContent = articleObj.date;
+  articleParagraph1.textContent = articleObj.firstParagraph;
+  articleParagraph2.textContent = articleObj.secondParagraph;
+  articleParagraph3.textContent = articleObj.thirdParagraph;
+  articleExpandButton.textContent = 'expand';
+
+  // Step 2 - the event listener waits for a click event to happen, and when 
+  // the expand button is clicked, it will expand and show the article
+  articleExpandButton.addEventListener('click', event => article.classList.toggle('article-open'))
+
+  // Step 3 - returns 'article' because that is the name of the object we created and appended all of the other elements too
+  return article
 }
+
+// Step 4 - loops over the data object. Each iteration through prints the article on the page, in this case there are 4.
+// Then, I create an article element and append it to the DOM inside the div 'articles' (found in index.html)
+data.forEach(dataObj => {
+  const article = articleMaker(dataObj);
+  document.querySelector('.articles').appendChild(article);
+})
+
+// Step 5
+// create a new const and append it to the function above
+const addNewArticle = {
+  title: 'The History of Lorem Ipsum',
+  date: 'August 5, 2020',
+  firstParagraph: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.',
+  secondParagraph: 'It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using Content here, content here, making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for lorem ipsum will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).',
+  thirdParagraph: 'Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of "de Finibus Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in section 1.10.32.'
+}
+
+mainContainer.appendChild(articleMaker(addNewArticle))
+
+// Stretch Goal
+// Adding GSAP
+
+gsap.to(".articles", {rotation: 360, x: 100, duration: 6, delay: 4})
